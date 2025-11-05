@@ -1,0 +1,28 @@
+name: Build on ARM64 Native
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-arm64:
+    runs-on: ubuntu-22.04-arm
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check architecture
+        run: uname -m   # 输出: aarch64
+
+      - name: Build example
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential
+          gcc main.c -o hello-arm64
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hello-arm64
+          path: hello-arm64
